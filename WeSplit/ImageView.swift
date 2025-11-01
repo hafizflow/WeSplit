@@ -26,6 +26,8 @@ struct ImageView: View {
         }
         .alert("Alert", isPresented: $isAlertShown) {
             Button("Dismiss", role: .destructive) { isAlertShown.toggle() }
+        } message: {
+            Text("Hello my name is *Hafiz*")
         }
     }
 }
