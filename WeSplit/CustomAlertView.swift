@@ -100,6 +100,7 @@ struct CustomAlertOverlay<Content: View>: View {
     var onCancel: () -> Void
     @ViewBuilder var content: Content
     @State private var isVisible = false
+    @State private var blurOpacity: CGFloat = 0
     @Environment(\.alertConfiguration) private var config
     
     var body: some View {
@@ -110,6 +111,7 @@ struct CustomAlertOverlay<Content: View>: View {
                 } label: {
                     CustomBlur(style: config.blurStyle, intensity: config.blurIntensity)
                         .ignoresSafeArea()
+                        .opacity(blurOpacity)
                 }
                 .buttonStyle(.plain)
                 
@@ -125,12 +127,16 @@ struct CustomAlertOverlay<Content: View>: View {
             }
         }
         .onAppear {
-            withAnimation(config.animation) { isVisible = true }
+            withAnimation(config.animation) {
+                blurOpacity = 1
+                isVisible = true
+            }
         }
     }
     
     private func dismissAlert() {
         withAnimation(config.animation) {
+            blurOpacity = 0
             isVisible = false
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
@@ -200,7 +206,7 @@ struct CustomAlertView: View {
             .alertBlurIntensity(0.8)
             .alertMaxWidth(300)
             .alertCornerRadius(30)
-            .alertTransition(.move(edge: .leading).combined(with: .opacity))
+            .alertTransition(.move(edge: .bottom).combined(with: .opacity))
                 // Success alert with custom styling
             .customAlert(isPresented: $showSuccessAlert) {
                 SuccessAlertContent()
