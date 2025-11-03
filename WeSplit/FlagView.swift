@@ -33,7 +33,7 @@ struct FlagView: View {
                 Spacer()
                 
                 Text("Guss the right flag")
-                    .font(.largeTitle.bold())
+                    .title()
                 
                 VStack(spacing: 24) {
                     VStack {
@@ -71,6 +71,7 @@ struct FlagView: View {
                 .frame(maxWidth: .infinity)
                 .background(.regularMaterial)
                 .clipShape(.rect(cornerRadius: 20))
+                .score(totalScore)
                 
                 Spacer()
                 
@@ -126,3 +127,40 @@ struct FlagView: View {
 #Preview {
     FlagView()
 }
+
+
+
+struct Title: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .font(.largeTitle.weight(.bold))
+    }
+}
+
+extension View {
+    func title() -> some View {
+        modifier(Title())
+    }
+}
+
+
+struct Score: ViewModifier {
+    var score: Int
+    
+    func body(content: Content) -> some View {
+        ZStack(alignment: .bottomTrailing) {
+            content
+            
+            Text("\(score)/8")
+                .padding()
+        }
+    }
+}
+
+
+extension View {
+    func score(_ score: Int) -> some View {
+        modifier(Score(score: score))
+    }
+}
+
