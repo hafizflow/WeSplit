@@ -109,10 +109,16 @@ struct CustomAlertOverlay<Content: View>: View {
                 Button {
                     dismissAlert()
                 } label: {
-                    CustomBlur(style: config.blurStyle, intensity: config.blurIntensity)
+//                    CustomBlur(style: config.blurStyle, intensity: config.blurIntensity)
+//                        .ignoresSafeArea()
+//                        .opacity(blurOpacity)
+                    
+                    Rectangle()
+                        .fill(.ultraThinMaterial)
                         .ignoresSafeArea()
                         .opacity(blurOpacity)
                 }
+                .contentShape(Rectangle())
                 .buttonStyle(.plain)
                 
                 if isVisible {
