@@ -57,9 +57,7 @@ struct FlagView: View {
                                isReset = true
                             }
                         } label:  {
-                            Image(countries[number])
-                                .clipShape(.capsule)
-                                .shadow(color: .black, radius: 5)
+                            FlagImage(countries[number])
                             
                         }
                         .sensoryFeedback(.increase, trigger: trigger)
@@ -164,3 +162,18 @@ extension View {
     }
 }
 
+
+
+struct FlagImage: View {
+    var image: String
+    
+    init(_ image: String) {
+        self.image = image
+    }
+    
+    var body: some View {
+        Image(image)
+            .clipShape(.capsule)
+            .shadow(color: .black, radius: 5)
+    }
+}

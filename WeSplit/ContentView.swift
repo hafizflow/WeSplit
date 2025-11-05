@@ -82,6 +82,7 @@ struct ContentView: View {
                 
                 Section ("Total amount for the check") {
                     Text(totalAmount, format: .currency(code: Locale.current.currency?.identifier ?? "BDT"))
+                        .zeroTip(tipPercetage)
                 }
                 
                 Section("Amount per person") {
@@ -128,4 +129,21 @@ struct ContentView: View {
 }
 
 
+struct ZeroTip: ViewModifier {
+    var tipPercetage: Int
+    
+    func body(content: Content) -> some View {
+        if tipPercetage == 0 {
+            content.foregroundStyle(.red)
+        } else {
+            content
+        }
+    }
+}
 
+
+extension View {
+    func zeroTip(_ tipPercetage: Int) -> some View {
+        modifier(ZeroTip(tipPercetage: tipPercetage))
+    }
+}
