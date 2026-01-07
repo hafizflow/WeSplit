@@ -9,10 +9,11 @@ struct RPSGame: View {
     @State private var round: Int = 0
     @State private var yourScore: Int = 0
     @State private var showResetAlert: Bool = false
+    @State private var value: Double = 1
+    @State private var date: Date = Date.now
     
         // Simpler winner logic
     func checkWinner() {
-            // Draw case
         if userMove == botMove {
             winner = "Draw"
             return
@@ -39,7 +40,7 @@ struct RPSGame: View {
             ], center: .top, startRadius: 200, endRadius: 600)
             .ignoresSafeArea()
             
-            VStack {
+            VStack(spacing: 30) {
                 Spacer()
                 
                 Text("The winner is \(winner)")
@@ -82,11 +83,15 @@ struct RPSGame: View {
                 Text("Bot move: \(botMove)")
                     .font(.title2)
                 
+                Stepper("Stepper \(value.formatted())", value: $value, in: 1...5, step: 2)
+                
+                DatePicker("DataPicker", selection: $date, in: Date.now..., displayedComponents: .date)
+                    .labelsHidden()
+                
                 Spacer()
             }
             .alert("Game Over!", isPresented: $showResetAlert) {
                 Button("Play Again") {
-                        // Reset everything
                     round = 0
                     yourScore = 0
                     winner = ""
@@ -116,13 +121,8 @@ struct corner: ViewModifier {
         ZStack(alignment: align) {
             content
             
-            if isRound {
-                Text("Round \(round)/5")
-                    .padding()
-            } else {
-                Text("YourScore \(round)/5")
-                    .padding()
-            }
+            Text(isRound ? "Round \(round)/5" : "YourScore \(round)/5")
+                .padding()
         }
     }
 }
